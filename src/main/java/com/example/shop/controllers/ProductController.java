@@ -66,4 +66,12 @@ public class ProductController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+    // buy product - DELETE
+    @DeleteMapping("/buy/{id}")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity buyProduct(@PathVariable Integer id, @RequestParam Integer amount) {
+        productService.buyProduct(id,amount);
+        return new ResponseEntity(HttpStatus.OK);
+    }
+
 }

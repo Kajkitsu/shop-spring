@@ -78,4 +78,18 @@ public class ProductService {
         return o.map(Collections::singleton)
                 .orElseGet(Collections::emptySet);
     }
+
+    public void buyProduct(Integer id, Integer amount) {
+        ProductEntity productEntityPom = productRepository.findById(id)
+                .orElseThrow(() -> new RescueNotFoundException("Product with id: " + id + " doesn't exist."));
+        if(productEntityPom.getAmount()-amount>=0)
+        {
+            productEntityPom.setAmount(productEntityPom.getAmount()-amount);
+            productRepository.save(productEntityPom);
+            System.out.println("Customer just bought "+amount+" " + productEntityPom.getNameOfProduct() + ", " + productEntityPom.getAmount() + " currently in stock.");
+            if(productEntityPom.getAmount() ==0)
+                productRepository.delete(productEntityPom);
+        }
+        else productRepository.delete(productEntityPom);
+    }
 }
